@@ -21,8 +21,6 @@ class DevicePowerBackend {
 
         return success;
       } catch (e) {
-        print(e);
-
         return false;
       }
     }

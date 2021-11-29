@@ -26,7 +26,7 @@ class StartPageController extends GetxController {
   }) {
     if (currentDevice.isPowerSet) {
       Get.toNamed<dynamic>(
-        RouteNames.dashboardPage,
+        RouteNames.devicePage,
         arguments: <String, ZeroconfService>{
           'currentDevice': currentDevice,
         },
@@ -57,7 +57,14 @@ class StartPageController extends GetxController {
       );
 
       if (nameSuccess) {
-        findDevices();
+        currentDevice.isPowerSet = true;
+        currentDevice.power = power;
+        Get.toNamed<dynamic>(
+          RouteNames.devicePage,
+          arguments: <String, ZeroconfService>{
+            'currentDevice': currentDevice,
+          },
+        );
       }
     } catch (e) {
       return;

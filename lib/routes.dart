@@ -1,10 +1,10 @@
+import 'package:app_get/pages/device/device.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:app_get/pages/start/start.dart';
-import 'package:app_get/pages/dashboard/dashboard.dart';
 
 class RouteNames {
   static const startPage = '/start';
-  static const dashboardPage = '/dashboard';
+  static const devicePage = '/device';
 }
 
 List<GetPage> routes() => <GetPage>[
@@ -13,7 +13,7 @@ List<GetPage> routes() => <GetPage>[
         page: () => const StartPage(),
       ),
       GetPage<dynamic>(
-        name: RouteNames.dashboardPage,
-        page: () => const DashboardPage(),
+        name: RouteNames.devicePage,
+        page: () => const DevicePage(),
       ),
     ];

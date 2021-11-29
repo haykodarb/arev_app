@@ -11,12 +11,10 @@ class DeviceNameBackend {
         'new': newName,
       };
 
-      print(currentDevice.ipAddress);
       final Uri uri = Uri.http(currentDevice.ipAddress, '/name', queryParams);
 
       try {
         final http.Response response = await http.get(uri);
-        print('Response: ${response.statusCode}');
 
         if (response.body.isNotEmpty) {
           return true;
@@ -24,7 +22,6 @@ class DeviceNameBackend {
           return false;
         }
       } catch (e) {
-        print(e);
         return false;
       }
     }
