@@ -6,26 +6,23 @@ class DevicePowerBackend {
     required int power,
     required ZeroconfService currentDevice,
   }) async {
-    if (power != currentDevice.power) {
-      try {
-        final SharedPreferences prefs = await SharedPreferences.getInstance();
+    try {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
 
-        final bool success = await prefs.setInt(
-          currentDevice.deviceID,
-          power,
-        );
+      final bool success = await prefs.setInt(
+        currentDevice.deviceID,
+        power,
+      );
 
-        currentDevice.power = power;
+      currentDevice.power = power;
 
-        currentDevice.isPowerSet = true;
+      currentDevice.isPowerSet = true;
 
-        return success;
-      } catch (e) {
-        return false;
-      }
+      return success;
+    } catch (e) {
+      print(e);
+      return false;
     }
-
-    return false;
   }
 
   Future<int?> getDevicePower({required ZeroconfService currentDevice}) async {

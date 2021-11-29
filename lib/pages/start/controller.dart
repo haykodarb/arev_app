@@ -1,13 +1,10 @@
-import 'dart:io';
-
 import 'package:app_get/data/device_name.dart';
 import 'package:app_get/data/device_power.dart';
+import 'package:app_get/data/zeroconf.dart';
 import 'package:app_get/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:app_get/models/zeroconf.dart';
-import 'package:multicast_dns/multicast_dns.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class StartPageController extends GetxController {
   RxList<ZeroconfService> foundDevices = <ZeroconfService>[].obs;
@@ -44,19 +41,21 @@ class StartPageController extends GetxController {
     required ZeroconfService currentDevice,
   }) async {
     try {
-      /* TODO ADD THIS
       final bool powerSuccess = await devicePowerBackend.storeDevicePower(
         power: power,
         currentDevice: currentDevice,
       );
-      */
+
+      /* TODO ADD THIS, HAVE TO DEBUG IN FIRMWARE
 
       final bool nameSuccess = await deviceNameBackend.postDeviceName(
         newName: name,
         currentDevice: currentDevice,
       );
+      
+      */
 
-      if (nameSuccess) {
+      if (powerSuccess) {
         currentDevice.isPowerSet = true;
         currentDevice.power = power;
         Get.toNamed<dynamic>(
@@ -174,74 +173,20 @@ class StartPageController extends GetxController {
     foundDevices.value = [];
   }
 
+  void addDevice({
+    required ZeroconfService newDevice,
+  }) {
+    foundDevices.addIf(
+      !foundDevices.any(
+        (item) => item.deviceName == newDevice.deviceName,
+      ),
+      newDevice,
+    );
+  }
+
   Future<void> findDevices() async {
     emptyDevices();
 
-    const String name = '_arev._tcp.local';
-
-    final MDnsClient client = MDnsClient(
-      rawDatagramSocketFactory: (dynamic host, int port,
-          {bool? reuseAddress, bool? reusePort, int? ttl}) {
-        return RawDatagramSocket.bind(
-          host,
-          port,
-          reuseAddress: true,
-          reusePort: false,
-          ttl: ttl!,
-        );
-      },
-    );
-
-    await client.start();
-
-    await for (final PtrResourceRecord ptr in client.lookup<PtrResourceRecord>(
-      ResourceRecordQuery.serverPointer(
-        name,
-      ),
-    )) {
-      await for (final SrvResourceRecord srv
-          in client.lookup<SrvResourceRecord>(
-        ResourceRecordQuery.service(
-          ptr.domainName,
-        ),
-      )) {
-        await for (final IPAddressResourceRecord ip
-            in client.lookup<IPAddressResourceRecord>(
-          ResourceRecordQuery.addressIPv4(
-            srv.target,
-          ),
-        )) {
-          final String deviceName = srv.name.split('.')[0];
-
-          final ZeroconfService service = ZeroconfService(
-            deviceName: deviceName,
-            ipAddress: ip.address.host,
-            deviceID: srv.target,
-          );
-
-          try {
-            final SharedPreferences prefs =
-                await SharedPreferences.getInstance();
-
-            if (prefs.containsKey(srv.target)) {
-              final int? powerValue = prefs.getInt(srv.target);
-              service.power = powerValue!;
-              service.isPowerSet = true;
-            }
-          } catch (e) {
-            rethrow;
-          }
-
-          foundDevices.addIf(
-            !foundDevices.any(
-              (item) => item.deviceName == service.deviceName,
-            ),
-            service,
-          );
-        }
-      }
-    }
-
-    client.stop();
+    ZeroconfBackend().scanZeroconfDevices(addDevice: addDevice);
   }
 }

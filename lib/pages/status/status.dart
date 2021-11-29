@@ -11,7 +11,7 @@ class StatusPage extends StatelessWidget {
     required BuildContext context,
   }) {
     return Row(
-      children: [
+      children: <Flexible>[
         Flexible(
           child: Container(
             child: Text(
@@ -95,11 +95,18 @@ class StatusPage extends StatelessWidget {
           );
         } else {
           return const SizedBox(
-            child: Center(
-                child: CircularProgressIndicator(
-              backgroundColor: Colors.white,
-            )),
             height: 350,
+            width: 350,
+            child: Center(
+              child: SizedBox(
+                height: 70,
+                width: 70,
+                child: CircularProgressIndicator(
+                  backgroundColor: Colors.white,
+                  strokeWidth: 7.0,
+                ),
+              ),
+            ),
           );
         }
       },

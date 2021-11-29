@@ -78,6 +78,11 @@ class StartPage extends StatelessWidget {
             currentDevice: currentDevice,
           );
         },
+        onLongPress: () {
+          controller.openConfigDialog(
+            currentDevice: currentDevice,
+          );
+        },
       ),
       margin: const EdgeInsets.only(
         top: 5,
