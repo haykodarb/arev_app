@@ -1,4 +1,5 @@
 import 'package:app_get/pages/device/controller.dart';
+import 'package:app_get/pages/graph/graph.dart';
 import 'package:app_get/pages/status/status.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -42,6 +43,7 @@ class DevicePage extends StatelessWidget {
     return AppBar(
       backgroundColor: Theme.of(context).colorScheme.primary,
       title: Text(controller.currentDevice.deviceName),
+      elevation: 10,
     );
   }
 
@@ -64,7 +66,7 @@ class DevicePage extends StatelessWidget {
               ),
               body: controller.bottomNavigationBarIndex.value == 0
                   ? const StatusPage()
-                  : Container(),
+                  : const GraphPage(),
             );
           },
         );

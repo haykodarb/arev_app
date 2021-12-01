@@ -1,13 +1,16 @@
 import 'package:app_get/models/day_data.dart';
 import 'package:app_get/models/month_data.dart';
 
-class PowerDataClass {
-  late double powerConsumed;
-  late double timeOn;
+class PowerData {
+  double powerConsumed = 0;
+  double timeOn = 0;
 
-  PowerDataClass.fromDailyDataArray(DayDataArray arrayClass, int power) {
-    List<DayDataMap> array = arrayClass.dayDataArray;
+  PowerData();
 
+  PowerData.fromDailyDataArray({
+    required List<DayDataMap> array,
+    required int power,
+  }) {
     double accTime = 0;
 
     for (int i = 1; i < array.length; i++) {
@@ -19,9 +22,7 @@ class PowerDataClass {
     powerConsumed = timeOn * power / 1000;
   }
 
-  PowerDataClass.fromMonthDataArray(MonthDataArray arrayClass, int power) {
-    List<MonthDataMap> array = arrayClass.monthArray;
-
+  PowerData.fromMonthDataArray(List<MonthDataMap> array, int power) {
     double accTime = 0;
 
     for (int i = 0; i < array.length; i++) {

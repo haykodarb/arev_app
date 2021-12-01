@@ -7,23 +7,27 @@ class BaseDataMap {
     required this.timeOfDay,
     required this.isResistanceOn,
   });
-}
 
-class BaseDataArray {
-  List<BaseDataMap> array = [];
+  static List<BaseDataMap> parseListFromString(String dataText) {
+    List<BaseDataMap> array = [];
 
-  BaseDataArray.fromString(String dataText) {
-    List<String> firstSplit = dataText.split(';');
+    final List<String> firstSplit = dataText.split(';');
+
     firstSplit.removeLast();
 
     for (String element in firstSplit) {
-      List<String> secondSplit = element.split(',');
-      array.add(BaseDataMap(
-        dayNumber: int.parse(secondSplit[0]),
-        timeOfDay: int.parse(secondSplit[1]),
-        isResistanceOn: int.parse(secondSplit[2]),
-      ));
+      final List<String> secondSplit = element.split(',');
+
+      array.add(
+        BaseDataMap(
+          dayNumber: int.parse(secondSplit[0]),
+          timeOfDay: int.parse(secondSplit[1]),
+          isResistanceOn: int.parse(secondSplit[2]),
+        ),
+      );
     }
+
+    return array;
   }
 }
 
@@ -36,13 +40,13 @@ class MonthDataMap {
     required this.timeOn,
     required this.powerConsumed,
   });
-}
 
-class MonthDataArray {
-  List<MonthDataMap> monthArray = [];
-
-  MonthDataArray.fromString(String dataText, int power) {
-    List<BaseDataMap> array = BaseDataArray.fromString(dataText).array;
+  static void parseData({
+    required String dataText,
+    required void Function(MonthDataMap dataMap) addToArray,
+    required int power,
+  }) {
+    List<BaseDataMap> array = BaseDataMap.parseListFromString(dataText);
 
     for (int day = 1; day <= 31; day++) {
       int addedTime = 0;
@@ -58,13 +62,13 @@ class MonthDataArray {
       final double totalTime = addedTime / 3600;
 
       if (addedTime > 0) {
-        monthArray.add(
-          MonthDataMap(
-            dayNumber: day,
-            timeOn: totalTime,
-            powerConsumed: totalTime * power / 1000,
-          ),
+        final MonthDataMap valueToAdd = MonthDataMap(
+          dayNumber: day,
+          timeOn: totalTime,
+          powerConsumed: totalTime * power / 1000,
         );
+
+        addToArray(valueToAdd);
       }
     }
   }

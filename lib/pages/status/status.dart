@@ -1,52 +1,10 @@
+import 'package:app_get/pages/common/data_item.dart';
 import 'package:app_get/pages/status/controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class StatusPage extends StatelessWidget {
   const StatusPage({Key? key}) : super(key: key);
-
-  Widget _dataItem({
-    required String itemTitle,
-    required String itemData,
-    required BuildContext context,
-  }) {
-    return Row(
-      children: <Flexible>[
-        Flexible(
-          child: Container(
-            child: Text(
-              itemTitle.toString(),
-              style: Theme.of(context).textTheme.bodyText1,
-            ),
-            height: 60,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              border: Border.symmetric(
-                horizontal: BorderSide(
-                  color: Theme.of(context).colorScheme.onPrimary,
-                  width: 2.0,
-                ),
-              ),
-            ),
-          ),
-        ),
-        Flexible(
-          child: Container(
-            child: Text(
-              itemData.toString(),
-              style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                    color: Theme.of(context).backgroundColor,
-                  ),
-            ),
-            alignment: Alignment.center,
-            height: 60,
-            decoration: const BoxDecoration(color: Colors.white),
-          ),
-        ),
-      ],
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    );
-  }
 
   Widget _webSocketData({
     required BuildContext context,
@@ -62,34 +20,25 @@ class StatusPage extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                _dataItem(
+                DataItem(
                   itemTitle: 'Sistema',
                   itemData: dataList[3] == '1' ? 'ON' : 'OFF',
-                  context: context,
                 ),
-                _dataItem(
+                DataItem(
                   itemTitle: 'Resistencia',
                   itemData: dataList[2] == '1' ? 'ON' : 'OFF',
-                  context: context,
                 ),
-                _dataItem(
+                DataItem(
                   itemTitle: 'Temperatura',
                   itemData: '${dataList[1]}°C',
-                  context: context,
                 ),
-                _dataItem(
-                  itemTitle: 'Hora',
-                  itemData: dataList[0],
-                  context: context,
+                DataItem(
+                  itemTitle: dataList[0],
+                  itemData: '28/11/2021',
                 ),
                 /* 
-                TODO ADD API IN DEVICE
+                TODO ADD API FOR DATE GET IN DEVICE
                 */
-                _dataItem(
-                  itemTitle: 'Fecha',
-                  itemData: '28/11/2021',
-                  context: context,
-                ),
               ],
             ),
           );

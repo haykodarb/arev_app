@@ -1,6 +1,7 @@
 import 'package:app_get/theme.dart';
 import 'package:app_get/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 
 void main() {
@@ -17,6 +18,10 @@ class MyApp extends StatelessWidget {
       getPages: routes(),
       initialRoute: RouteNames.startPage,
       theme: darkTheme,
+      localizationsDelegates: const [GlobalMaterialLocalizations.delegate],
+      supportedLocales: const [
+        Locale('es'),
+      ],
     );
   }
 }

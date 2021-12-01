@@ -32,14 +32,14 @@ dependencies:
   multicast_dns: ^0.3.1
   http: any
   web_socket_channel: ^2.0.0
-  month_picker_dialog: ^0.3.3
+  month_picker_dialog: ^0.4.0
   flutter_localizations:
     sdk: flutter
   date_format: ^2.0.2
   charts_flutter: ^0.10.0
   flutter_material_pickers: ^2.0.1
   shared_preferences: ^2.0.5
-  syncfusion_flutter_charts: ^19.1.63
+  syncfusion_flutter_charts: ^19.3.56
   flutter_launcher_icons: ^0.9.0
   get: ^4.3.8
 
