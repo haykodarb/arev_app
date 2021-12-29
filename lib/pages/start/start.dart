@@ -2,6 +2,7 @@ import 'package:app_get/models/zeroconf.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:app_get/pages/start/controller.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class StartPage extends StatelessWidget {
   const StartPage({Key? key}) : super(key: key);
@@ -12,8 +13,11 @@ class StartPage extends StatelessWidget {
     return Container(
       child: Padding(
         child: Text(
-          'Arev.',
-          style: Theme.of(context).textTheme.headline1,
+          'Arev',
+          style: GoogleFonts.patuaOne(
+            fontSize: 80,
+            color: Colors.white,
+          ),
         ),
         padding: const EdgeInsets.fromLTRB(70, 30, 70, 30),
       ),
@@ -21,8 +25,6 @@ class StartPage extends StatelessWidget {
         top: 50,
       ),
       alignment: Alignment.center,
-      width: 300,
-      height: 150,
     );
   }
 

@@ -64,14 +64,11 @@ class GraphPageController extends GetxController {
       Get.arguments['currentDevice'] as ZeroconfService;
 
   Rx<GraphType> selectedType = GraphType.day.obs;
-
   RxList<DayDataMap> dayGraphData = <DayDataMap>[].obs;
-
   RxList<MonthDataMap> monthGraphData = <MonthDataMap>[].obs;
-
   Rx<PowerData> powerData = PowerData().obs;
-
   Rx<bool> isGraphLoaded = false.obs;
+  Rx<DateTime> selectedDate = DateTime.now().obs;
 
   void _addToDayGraphData(DayDataMap dayDataMap) {
     dayGraphData.add(dayDataMap);
@@ -93,6 +90,10 @@ class GraphPageController extends GetxController {
     final DateTime? pickedDay = alreadySelectedDate ?? await _getDay();
 
     if (pickedDay == null) return;
+
+    selectedType.value = GraphType.day;
+
+    selectedDate.value = pickedDay;
 
     isGraphLoaded.value = false;
 
@@ -117,8 +118,6 @@ class GraphPageController extends GetxController {
       ),
     );
 
-    selectedType.value = GraphType.day;
-
     isGraphLoaded.value = true;
 
     return;
@@ -128,6 +127,10 @@ class GraphPageController extends GetxController {
     final DateTime? pickedMonth = await _getMonth();
 
     if (pickedMonth == null) return;
+
+    selectedType.value = GraphType.month;
+
+    selectedDate.value = pickedMonth;
 
     isGraphLoaded.value = false;
 

@@ -23,12 +23,14 @@ class DevicePage extends StatelessWidget {
             label: 'Estado',
             icon: Icon(
               Icons.tungsten,
+              size: 30,
             ),
           ),
           BottomNavigationBarItem(
             label: 'Consumo',
             icon: Icon(
               Icons.bar_chart,
+              size: 30,
             ),
           ),
         ],
