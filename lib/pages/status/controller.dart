@@ -1,5 +1,6 @@
 import 'package:app_get/data/websocket.dart';
 import 'package:app_get/models/zeroconf.dart';
+import 'package:app_get/routes.dart';
 import 'package:get/get.dart';
 
 class StatusPageController extends GetxController {
@@ -19,6 +20,15 @@ class StatusPageController extends GetxController {
       ipAddress: currentDevice.ipAddress,
     );
     return stream;
+  }
+
+  Future<void> onConfigButtonPressed() async {
+    Get.toNamed<dynamic>(
+      RouteNames.configPage,
+      arguments: <String, ZeroconfService>{
+        'currentDevice': currentDevice,
+      },
+    );
   }
 
   @override

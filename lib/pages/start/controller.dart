@@ -117,27 +117,32 @@ class StartPageController extends GetxController {
               power.value = int.tryParse(newPower)!;
             },
           ),
-          Row(
-            children: [
-              TextButton(
-                child: const Text('ACEPTAR'),
-                onPressed: () {
-                  _postValues(
-                    power: power.value,
-                    name: name.value,
-                    currentDevice: currentDevice,
-                  );
-                  Get.back<dynamic>();
-                },
-              ),
-              TextButton(
-                child: const Text('CANCELAR'),
-                onPressed: () {
-                  Get.back<dynamic>();
-                },
-              ),
-            ],
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+          Container(
+            margin: const EdgeInsets.only(
+              top: 40,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton(
+                  child: const Text('CANCELAR'),
+                  onPressed: () {
+                    Get.back<dynamic>();
+                  },
+                ),
+                TextButton(
+                  child: const Text('ACEPTAR'),
+                  onPressed: () {
+                    _postValues(
+                      power: power.value,
+                      name: name.value,
+                      currentDevice: currentDevice,
+                    );
+                    Get.back<dynamic>();
+                  },
+                ),
+              ],
+            ),
           ),
         ],
       );
@@ -150,7 +155,7 @@ class StartPageController extends GetxController {
         backgroundColor: Colors.transparent,
         child: ConstrainedBox(
           constraints: const BoxConstraints(
-            maxHeight: 300,
+            maxHeight: 400,
           ),
           child: Container(
             child: _dialogForm(),

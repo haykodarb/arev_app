@@ -1,5 +1,6 @@
 import 'package:app_get/data/websocket.dart';
 import 'package:app_get/models/zeroconf.dart';
+import 'package:app_get/routes.dart';
 import 'package:get/get.dart';
 
 class DevicePageController extends GetxController {
@@ -11,7 +12,25 @@ class DevicePageController extends GetxController {
   final WebSocketBackend webSocketBackend = WebSocketBackend();
 
   void onBottomNavigationItemTap(int index) {
-    bottomNavigationBarIndex.value = index;
+    switch (index) {
+      case 0:
+      case 1:
+        bottomNavigationBarIndex.value = index;
+        break;
+      case 2:
+        onConfigButtonPressed();
+        break;
+      default:
+    }
+  }
+
+  Future<void> onConfigButtonPressed() async {
+    Get.toNamed<dynamic>(
+      RouteNames.configPage,
+      arguments: <String, ZeroconfService>{
+        'currentDevice': currentDevice,
+      },
+    );
   }
 
   Stream<dynamic> createWebSocketStream() {

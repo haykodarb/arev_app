@@ -46,7 +46,7 @@ class GraphPage extends StatelessWidget {
                     ? 'Día'
                     : 'Mes',
             style: TextStyle(
-              color: isSelected ? onPrimary : primary,
+              color: onPrimary,
               fontSize: 22,
             ),
           ),
@@ -94,7 +94,6 @@ class GraphPage extends StatelessWidget {
         DataItem(
           itemData: '${powerData.powerConsumed.toStringAsFixed(2)}kWh',
           itemTitle: 'Consumo',
-          isLong: true,
         ),
       ],
     );

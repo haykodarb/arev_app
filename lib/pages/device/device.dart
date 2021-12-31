@@ -18,6 +18,8 @@ class DevicePage extends StatelessWidget {
         currentIndex: controller.bottomNavigationBarIndex.value,
         selectedItemColor: Theme.of(context).colorScheme.onPrimary,
         unselectedItemColor: Theme.of(context).colorScheme.background,
+        unselectedFontSize: 15,
+        selectedFontSize: 15,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             label: 'Estado',
@@ -30,6 +32,13 @@ class DevicePage extends StatelessWidget {
             label: 'Consumo',
             icon: Icon(
               Icons.bar_chart,
+              size: 30,
+            ),
+          ),
+          BottomNavigationBarItem(
+            label: 'Configurar',
+            icon: Icon(
+              Icons.settings,
               size: 30,
             ),
           ),
@@ -67,7 +76,7 @@ class DevicePage extends StatelessWidget {
                 controller: controller,
               ),
               body: controller.bottomNavigationBarIndex.value == 0
-                  ? const StatusPage()
+                  ? StatusPage()
                   : const GraphPage(),
             );
           },

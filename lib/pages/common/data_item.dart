@@ -5,22 +5,19 @@ class DataItem extends StatelessWidget {
     Key? key,
     required this.itemTitle,
     required this.itemData,
-    required this.isLong,
   }) : super(key: key);
 
   final String itemTitle;
   final String itemData;
-  final bool isLong;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(top: 20),
+    return SizedBox(
       height: 60,
       child: Row(
         children: <Flexible>[
           Expanded(
-            flex: isLong ? 3 : 5,
+            flex: 8,
             child: Container(
               child: Text(
                 itemTitle.toString(),
@@ -40,7 +37,7 @@ class DataItem extends StatelessWidget {
             ),
           ),
           Expanded(
-            flex: isLong ? 5 : 3,
+            flex: 5,
             child: Container(
               child: Text(
                 itemData.toString(),
