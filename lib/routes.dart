@@ -12,7 +12,7 @@ class RouteNames {
 List<GetPage> routes() => <GetPage>[
       GetPage<dynamic>(
         name: RouteNames.startPage,
-        page: () => const StartPage(),
+        page: () => StartPage(),
       ),
       GetPage<dynamic>(
         name: RouteNames.devicePage,

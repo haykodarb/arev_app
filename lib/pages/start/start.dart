@@ -5,7 +5,9 @@ import 'package:app_get/pages/start/controller.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class StartPage extends StatelessWidget {
-  const StartPage({Key? key}) : super(key: key);
+  StartPage({Key? key}) : super(key: key);
+
+  final StartPageController startPageController = StartPageController();
 
   Widget _brandLogo({
     required BuildContext context,
@@ -32,9 +34,21 @@ class StartPage extends StatelessWidget {
     required BuildContext context,
   }) {
     return Container(
-      child: Text(
-        'Dispositivos encontrados.',
-        style: Theme.of(context).textTheme.subtitle1,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            'Dispositivos encontrados',
+            style: Theme.of(context).textTheme.subtitle1,
+          ),
+          IconButton(
+            onPressed: startPageController.findDevices,
+            icon: const Icon(
+              Icons.replay_outlined,
+              size: 30,
+            ),
+          ),
+        ],
       ),
       margin: const EdgeInsets.only(
         top: 30,
@@ -53,51 +67,122 @@ class StartPage extends StatelessWidget {
     );
   }
 
+  Widget _deviceSelectButton({
+    required ZeroconfService currentDevice,
+    required BoxConstraints constraints,
+  }) {
+    return Expanded(
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          fixedSize: Size(constraints.maxWidth, 75),
+          elevation: 20,
+        ),
+        child: Text(
+          currentDevice.deviceName,
+          textAlign: TextAlign.center,
+          style: const TextStyle(
+            fontSize: 22,
+          ),
+        ),
+        onPressed: () {
+          startPageController.onDeviceItemPressed(
+            currentDevice: currentDevice,
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _deviceSettingsButtons({
+    required ZeroconfService currentDevice,
+  }) {
+    final context = Get.context!;
+    return Expanded(
+      child: Row(
+        children: [
+          Expanded(
+            child: Container(
+              margin: const EdgeInsets.only(
+                right: 5,
+              ),
+              child: OutlinedButton(
+                onPressed: () {
+                  startPageController.openConfigDialog(
+                    currentDevice: currentDevice,
+                  );
+                },
+                child: const Icon(
+                  Icons.settings_outlined,
+                  color: Colors.white,
+                  size: 40,
+                ),
+                style: OutlinedButton.styleFrom(
+                  side: BorderSide(
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            child: Container(
+              margin: const EdgeInsets.only(
+                left: 5,
+              ),
+              child: OutlinedButton(
+                onPressed: () {
+                  startPageController.openDateDialog(
+                    currentDevice: currentDevice,
+                  );
+                },
+                style: OutlinedButton.styleFrom(
+                  side: BorderSide(
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                ),
+                child: const Icon(
+                  Icons.date_range_outlined,
+                  color: Colors.white,
+                  size: 40,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _deviceItem({
     required ZeroconfService currentDevice,
-    required BuildContext context,
-    required StartPageController controller,
   }) {
-    return Container(
-      child: MaterialButton(
-        child: Container(
-          child: Text(
-            currentDevice.deviceName,
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.button,
-          ),
-          alignment: Alignment.center,
+    return LayoutBuilder(builder: (
+      context,
+      constraints,
+    ) {
+      return Container(
+        margin: const EdgeInsets.only(
+          top: 20,
         ),
-        elevation: 5,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(
-            5,
-          ),
+        height: 150,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _deviceSelectButton(
+              constraints: constraints,
+              currentDevice: currentDevice,
+            ),
+            _deviceSettingsButtons(
+              currentDevice: currentDevice,
+            ),
+          ],
         ),
-        color: Theme.of(context).colorScheme.primary,
-        onPressed: () {
-          controller.onDeviceItemPressed(
-            currentDevice: currentDevice,
-          );
-        },
-        onLongPress: () {
-          controller.openConfigDialog(
-            currentDevice: currentDevice,
-          );
-        },
-      ),
-      margin: const EdgeInsets.only(
-        top: 5,
-        bottom: 5,
-      ),
-      height: 60,
-    );
+      );
+    });
   }
 
   Widget _deviceList({
     required List<ZeroconfService> foundDevices,
-    required StartPageController controller,
-    required BuildContext context,
   }) {
     return Flexible(
       child: SizedBox(
@@ -106,9 +191,7 @@ class StartPage extends StatelessWidget {
           itemCount: foundDevices.length,
           itemBuilder: (BuildContext context, int index) {
             return _deviceItem(
-              context: context,
               currentDevice: foundDevices[index],
-              controller: controller,
             );
           },
         ),
@@ -120,7 +203,7 @@ class StartPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder(
-      init: StartPageController(),
+      init: startPageController,
       builder: (StartPageController controller) {
         return Scaffold(
           backgroundColor: Theme.of(context).colorScheme.background,
@@ -138,9 +221,7 @@ class StartPage extends StatelessWidget {
                 ),
                 Obx(
                   () => _deviceList(
-                    context: context,
                     foundDevices: controller.foundDevices,
-                    controller: controller,
                   ),
                 ),
               ],

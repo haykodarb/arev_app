@@ -1,16 +1,14 @@
-import 'package:app_get/data/device_name.dart';
-import 'package:app_get/data/device_power.dart';
+import 'package:app_get/data/device_config.dart';
 import 'package:app_get/data/zeroconf.dart';
 import 'package:app_get/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:app_get/models/zeroconf.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 
 class StartPageController extends GetxController {
   RxList<ZeroconfService> foundDevices = <ZeroconfService>[].obs;
-
-  final DevicePowerBackend devicePowerBackend = DevicePowerBackend();
-  final DeviceNameBackend deviceNameBackend = DeviceNameBackend();
 
   @override
   void onInit() {
@@ -21,18 +19,12 @@ class StartPageController extends GetxController {
   void onDeviceItemPressed({
     required ZeroconfService currentDevice,
   }) {
-    if (currentDevice.isPowerSet) {
-      Get.toNamed<dynamic>(
-        RouteNames.devicePage,
-        arguments: <String, ZeroconfService>{
-          'currentDevice': currentDevice,
-        },
-      );
-    } else {
-      openConfigDialog(
-        currentDevice: currentDevice,
-      );
-    }
+    Get.toNamed<dynamic>(
+      RouteNames.devicePage,
+      arguments: <String, ZeroconfService>{
+        'currentDevice': currentDevice,
+      },
+    );
   }
 
   Future<void> _postValues({
@@ -41,33 +33,142 @@ class StartPageController extends GetxController {
     required ZeroconfService currentDevice,
   }) async {
     try {
-      final bool powerSuccess = await devicePowerBackend.storeDevicePower(
+      final bool powerSuccess = await DeviceConfigBackend.postDevicePower(
         power: power,
         currentDevice: currentDevice,
       );
 
-      /* TODO ADD THIS, HAVE TO DEBUG IN FIRMWARE
-
-      final bool nameSuccess = await deviceNameBackend.postDeviceName(
+      final bool nameSuccess = await DeviceConfigBackend.postDeviceName(
         newName: name,
         currentDevice: currentDevice,
       );
-      
-      */
-
       if (powerSuccess) {
-        currentDevice.isPowerSet = true;
         currentDevice.power = power;
-        Get.toNamed<dynamic>(
-          RouteNames.devicePage,
-          arguments: <String, ZeroconfService>{
-            'currentDevice': currentDevice,
-          },
+      }
+
+      if (nameSuccess) {
+        Future.delayed(
+          const Duration(milliseconds: 100),
+          findDevices,
         );
       }
     } catch (e) {
       return;
     }
+  }
+
+  Future<String> _getDeviceTime({
+    required ZeroconfService currentDevice,
+  }) async {
+    final int secondsSinceEpoch = await DeviceConfigBackend.getDeviceUnixTime(
+        ipAddress: currentDevice.ipAddress);
+
+    final DateFormat dateFormat = DateFormat('MM/dd/yyyy hh:mm:ss a');
+
+    final DateTime dateTime =
+        DateTime.fromMillisecondsSinceEpoch(secondsSinceEpoch * 1000).toUtc();
+
+    return dateFormat.format(dateTime);
+  }
+
+  Future<void> openDateDialog({
+    required ZeroconfService currentDevice,
+  }) async {
+    final context = Get.context!;
+
+    String date = await _getDeviceTime(currentDevice: currentDevice);
+
+    Widget _dialogForm() {
+      return Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 15,
+          vertical: 5,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              'La fecha actual del dispositivo es: ',
+              textAlign: TextAlign.center,
+              style: GoogleFonts.roboto(
+                fontWeight: FontWeight.w300,
+              ),
+            ),
+            Text(
+              date,
+              textAlign: TextAlign.center,
+            ),
+            Text(
+              '¿Deseas corregirla?',
+              textAlign: TextAlign.center,
+              style: GoogleFonts.roboto(
+                fontWeight: FontWeight.w300,
+              ),
+            ),
+            Text(
+              'Esto va a fijar la hora y fecha del dispositivo según los valores actuales de tu telefono.',
+              textAlign: TextAlign.center,
+              style: GoogleFonts.roboto(
+                fontWeight: FontWeight.w300,
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.only(
+                top: 40,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                    child: const Text('CANCELAR'),
+                    onPressed: () {
+                      Get.back<dynamic>();
+                    },
+                  ),
+                  TextButton(
+                    child: const Text('SI, AJUSTAR'),
+                    onPressed: () async {
+                      final bool success =
+                          await DeviceConfigBackend.setDeviceUnixTime(
+                        currentDevice: currentDevice,
+                      );
+                      if (success) {
+                        Get.back<dynamic>();
+                      }
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    Get.dialog<dynamic>(
+      Dialog(
+        backgroundColor: Colors.transparent,
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(
+            maxHeight: 400,
+          ),
+          child: Container(
+            height: double.maxFinite,
+            child: _dialogForm(),
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.background,
+              border: Border.all(
+                color: Theme.of(context).colorScheme.primary,
+                width: 1.0,
+              ),
+              borderRadius: BorderRadius.circular(5),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
   void openConfigDialog({
@@ -93,7 +194,7 @@ class StartPageController extends GetxController {
             },
             autovalidateMode: AutovalidateMode.always,
             style: const TextStyle(
-              fontSize: 18,
+              fontSize: 22,
             ),
             obscureText: false,
             keyboardType: TextInputType.name,
@@ -108,7 +209,7 @@ class StartPageController extends GetxController {
               labelText: 'Potencia [W]',
             ),
             style: const TextStyle(
-              fontSize: 18,
+              fontSize: 22,
             ),
             keyboardType: TextInputType.number,
             obscureText: false,
@@ -183,7 +284,7 @@ class StartPageController extends GetxController {
   }) {
     foundDevices.addIf(
       !foundDevices.any(
-        (item) => item.deviceName == newDevice.deviceName,
+        (item) => item.ipAddress == newDevice.ipAddress,
       ),
       newDevice,
     );
@@ -192,6 +293,6 @@ class StartPageController extends GetxController {
   Future<void> findDevices() async {
     emptyDevices();
 
-    ZeroconfBackend().scanZeroconfDevices(addDevice: addDevice);
+    ZeroconfBackend.scanZeroconfDevices(addDevice: addDevice);
   }
 }

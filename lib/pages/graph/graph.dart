@@ -43,8 +43,8 @@ class GraphPage extends StatelessWidget {
             isSelected
                 ? label
                 : buttonType == GraphType.day
-                    ? 'Día'
-                    : 'Mes',
+                    ? 'DÍA'
+                    : 'MES',
             style: TextStyle(
               color: onPrimary,
               fontSize: 22,

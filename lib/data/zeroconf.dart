@@ -2,10 +2,10 @@ import 'dart:io';
 
 import 'package:app_get/models/zeroconf.dart';
 import 'package:multicast_dns/multicast_dns.dart';
-import 'package:app_get/data/device_power.dart';
+import 'package:app_get/data/device_config.dart';
 
 class ZeroconfBackend {
-  Future<void> scanZeroconfDevices(
+  static Future<void> scanZeroconfDevices(
       {required void Function({
         required ZeroconfService newDevice,
       })
@@ -46,36 +46,27 @@ class ZeroconfBackend {
         )) {
           final String deviceName = srv.name.split('.')[0];
 
-          final ZeroconfService newDevice = ZeroconfService(
-            deviceName: deviceName,
-            ipAddress: ip.address.host,
-            deviceID: srv.target,
-          );
-
           try {
-            bool isPowerSet = await DevicePowerBackend().isDevicePowerSet(
-              currentDevice: newDevice,
+            final int power = await DeviceConfigBackend.getDevicePower(
+              ipAddress: ip.address.host,
             );
 
-            if (isPowerSet) {
-              final int? powerValue = await DevicePowerBackend().getDevicePower(
-                currentDevice: newDevice,
-              );
+            final ZeroconfService newDevice = ZeroconfService(
+              deviceName: deviceName,
+              ipAddress: ip.address.host,
+              deviceID: srv.target,
+              power: power,
+            );
 
-              newDevice.power = powerValue!;
-              newDevice.isPowerSet = true;
-            }
+            addDevice(
+              newDevice: newDevice,
+            );
           } catch (e) {
             rethrow;
           }
-
-          addDevice(
-            newDevice: newDevice,
-          );
         }
       }
     }
-
     client.stop();
   }
 }

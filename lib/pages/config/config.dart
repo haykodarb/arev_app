@@ -17,20 +17,20 @@ class ConfigPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           ElevatedButton(
-            onPressed: configController.onAcceptButtonPressed,
-            style: ElevatedButton.styleFrom(
-              elevation: 20,
-              fixedSize: const Size(140, 60),
-            ),
-            child: const Text('ACEPTAR'),
-          ),
-          ElevatedButton(
             onPressed: configController.onCancelButtonPressed,
             style: ElevatedButton.styleFrom(
               elevation: 20,
               fixedSize: const Size(140, 60),
             ),
             child: const Text('CANCELAR'),
+          ),
+          ElevatedButton(
+            onPressed: configController.onAcceptButtonPressed,
+            style: ElevatedButton.styleFrom(
+              elevation: 20,
+              fixedSize: const Size(140, 60),
+            ),
+            child: const Text('ACEPTAR'),
           ),
         ],
       ),
