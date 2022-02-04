@@ -9,20 +9,30 @@ class ConfigPage extends StatelessWidget {
   final ConfigController configController = ConfigController();
 
   Widget _confirmButtons() {
+    final BuildContext context = Get.context!;
     return Container(
       margin: const EdgeInsets.only(
-        top: 30,
+        bottom: 30,
       ),
+      alignment: Alignment.center,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          ElevatedButton(
+          OutlinedButton(
             onPressed: configController.onCancelButtonPressed,
-            style: ElevatedButton.styleFrom(
-              elevation: 20,
+            style: OutlinedButton.styleFrom(
               fixedSize: const Size(140, 60),
+              side: BorderSide(
+                color: Theme.of(context).colorScheme.primary,
+              ),
             ),
-            child: const Text('CANCELAR'),
+            child: Text(
+              'Cancelar',
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onBackground,
+                fontSize: 20,
+              ),
+            ),
           ),
           ElevatedButton(
             onPressed: configController.onAcceptButtonPressed,
@@ -30,7 +40,13 @@ class ConfigPage extends StatelessWidget {
               elevation: 20,
               fixedSize: const Size(140, 60),
             ),
-            child: const Text('ACEPTAR'),
+            child: Text(
+              'Aceptar',
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onBackground,
+                fontSize: 20,
+              ),
+            ),
           ),
         ],
       ),
@@ -190,7 +206,9 @@ class ConfigPage extends StatelessWidget {
                         _configButton(ParameterType.finalTime),
                         _configButton(ParameterType.initialTemp),
                         _configButton(ParameterType.finalTemp),
-                        _confirmButtons(),
+                        Expanded(
+                          child: _confirmButtons(),
+                        ),
                       ],
                     )
                   : const Center(

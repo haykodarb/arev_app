@@ -200,6 +200,21 @@ class StartPage extends StatelessWidget {
     );
   }
 
+  Widget _spinningLoader() {
+    return const Expanded(
+      child: Center(
+        child: SizedBox(
+          height: 75,
+          width: 75,
+          child: CircularProgressIndicator(
+            color: Colors.white,
+            strokeWidth: 7.5,
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return GetBuilder(
@@ -220,9 +235,11 @@ class StartPage extends StatelessWidget {
                   context: context,
                 ),
                 Obx(
-                  () => _deviceList(
-                    foundDevices: controller.foundDevices,
-                  ),
+                  () => controller.isLoading.value
+                      ? _spinningLoader()
+                      : _deviceList(
+                          foundDevices: controller.foundDevices,
+                        ),
                 ),
               ],
             ),

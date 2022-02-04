@@ -109,22 +109,9 @@ class StatusPage extends StatelessWidget {
               _temperatureIndicator(
                 temperature: temperature,
               ),
-              SizedBox(
-                height: 180,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    DataItem(
-                      itemTitle: 'Sistema',
-                      itemData: dataList[3] == '1' ? 'ON' : 'OFF',
-                    ),
-                    DataItem(
-                      itemTitle: 'Resistencia',
-                      itemData: dataList[2] == '1' ? 'ON' : 'OFF',
-                    ),
-                  ],
-                ),
+              DataItem(
+                itemTitle: 'Resistencia',
+                itemData: dataList[2] == '1' ? 'ON' : 'OFF',
               )
             ],
           );
@@ -149,16 +136,21 @@ class StatusPage extends StatelessWidget {
     return GetBuilder(
       init: statusController,
       builder: (StatusPageController controller) {
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Expanded(
-              child: _webSocketData(
-                context: context,
+        return Padding(
+          padding: const EdgeInsets.symmetric(
+            vertical: 20,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Expanded(
+                child: _webSocketData(
+                  context: context,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         );
       },
     );

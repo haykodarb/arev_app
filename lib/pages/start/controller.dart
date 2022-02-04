@@ -10,10 +10,12 @@ import 'package:intl/intl.dart';
 class StartPageController extends GetxController {
   RxList<ZeroconfService> foundDevices = <ZeroconfService>[].obs;
 
+  RxBool isLoading = true.obs;
+
   @override
   void onInit() {
-    findDevices();
     super.onInit();
+    findDevices();
   }
 
   void onDeviceItemPressed({
@@ -282,6 +284,10 @@ class StartPageController extends GetxController {
   void addDevice({
     required ZeroconfService newDevice,
   }) {
+    if (isLoading.value) {
+      isLoading.value = false;
+    }
+
     foundDevices.addIf(
       !foundDevices.any(
         (item) => item.ipAddress == newDevice.ipAddress,
@@ -292,7 +298,7 @@ class StartPageController extends GetxController {
 
   Future<void> findDevices() async {
     emptyDevices();
-
-    ZeroconfBackend.scanZeroconfDevices(addDevice: addDevice);
+    isLoading.value = true;
+    await ZeroconfBackend.scanZeroconfDevices(addDevice: addDevice);
   }
 }
