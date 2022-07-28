@@ -1,4 +1,4 @@
-package com.example.app_get
+package arev.hayk.ar
 
 import io.flutter.embedding.android.FlutterActivity
 

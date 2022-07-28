@@ -108,7 +108,7 @@ class ConfigController extends GetxController {
         break;
 
       case ParameterType.finalTemp:
-        minValue = configBody.value.initialTime + 1;
+        minValue = configBody.value.initialTemp + 1;
         maxValue = 80;
         break;
 

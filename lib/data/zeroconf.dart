@@ -38,6 +38,8 @@ class ZeroconfBackend {
           ptr.domainName,
         ),
       )) {
+        print(srv);
+
         await for (final IPAddressResourceRecord ip
             in client.lookup<IPAddressResourceRecord>(
           ResourceRecordQuery.addressIPv4(

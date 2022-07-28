@@ -69,7 +69,7 @@ final ThemeData darkTheme = ThemeData(
     style: OutlinedButton.styleFrom(
       primary: background,
       shadowColor: surface,
-      elevation: 10,
+      elevation: 5,
       side: const BorderSide(
         color: surface,
         width: 1,

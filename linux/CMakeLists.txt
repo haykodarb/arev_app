@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.10)
 project(runner LANGUAGES CXX)
 
-set(BINARY_NAME "app_get")
-set(APPLICATION_ID "com.example.app_get")
+set(BINARY_NAME "Arev")
+set(APPLICATION_ID "arev.hayk.ar")
 
 cmake_policy(SET CMP0063 NEW)
 
