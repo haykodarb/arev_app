@@ -75,10 +75,10 @@ class ConfigBody {
     switch (parameter) {
       case ParameterType.initialTime:
       case ParameterType.finalTime:
-        return value.toString().padLeft(2, '0') + ':00';
+        return '${value.toString().padLeft(2, '0')}:00';
       case ParameterType.initialTemp:
       case ParameterType.finalTemp:
-        return value.toString() + '.00°C';
+        return '$value.00°C';
       default:
         return 'Error';
     }

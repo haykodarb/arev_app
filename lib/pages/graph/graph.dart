@@ -23,8 +23,7 @@ class GraphPage extends StatelessWidget {
 
     final bool isSelected = buttonType == selectedType;
     final String label =
-        (buttonType == GraphType.day ? 'Día ${date.day}-' : 'Mes ') +
-            '${date.month}-${date.year}';
+        '${buttonType == GraphType.day ? 'Día ${date.day}-' : 'Mes '}${date.month}-${date.year}';
 
     return Expanded(
       child: Container(
@@ -47,6 +46,9 @@ class GraphPage extends StatelessWidget {
           style: TextButton.styleFrom(
             elevation: 20,
           ),
+          onPressed: buttonType == GraphType.day
+              ? controller.dayButtonCallback
+              : controller.monthButtonCallback,
           child: Text(
             isSelected
                 ? label
@@ -58,9 +60,6 @@ class GraphPage extends StatelessWidget {
               fontSize: 20,
             ),
           ),
-          onPressed: buttonType == GraphType.day
-              ? controller.dayButtonCallback
-              : controller.monthButtonCallback,
         ),
       ),
     );

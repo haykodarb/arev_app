@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:app_get/data/device_config.dart';
 import 'package:app_get/data/zeroconf.dart';
 import 'package:app_get/routes.dart';
@@ -157,7 +159,6 @@ class StartPageController extends GetxController {
           ),
           child: Container(
             height: double.maxFinite,
-            child: _dialogForm(),
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.background,
@@ -167,6 +168,7 @@ class StartPageController extends GetxController {
               ),
               borderRadius: BorderRadius.circular(5),
             ),
+            child: _dialogForm(),
           ),
         ),
       ),
@@ -261,7 +263,6 @@ class StartPageController extends GetxController {
             maxHeight: 400,
           ),
           child: Container(
-            child: _dialogForm(),
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
               color: Theme.of(context!).colorScheme.background,
@@ -271,6 +272,7 @@ class StartPageController extends GetxController {
               ),
               borderRadius: BorderRadius.circular(5),
             ),
+            child: _dialogForm(),
           ),
         ),
       ),

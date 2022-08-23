@@ -23,9 +23,7 @@ final ThemeData darkTheme = ThemeData(
   primaryColorDark: red,
   colorScheme: const ColorScheme(
     primary: primary,
-    primaryVariant: primary,
     secondary: secondary,
-    secondaryVariant: secondary,
     surface: surface,
     background: background,
     error: red,

@@ -127,7 +127,20 @@ class DayGraph extends StatelessWidget {
           if (trackballDetails.seriesIndex == 0) return const SizedBox.shrink();
 
           return Container(
+            height: 80,
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.background,
+              border: Border.all(
+                color: Theme.of(context).colorScheme.primary,
+                width: 2.5,
+              ),
+              borderRadius: BorderRadius.circular(
+                10,
+              ),
+            ),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
                   value,
@@ -154,19 +167,6 @@ class DayGraph extends StatelessWidget {
                   ),
                 )
               ],
-              mainAxisAlignment: MainAxisAlignment.center,
-            ),
-            height: 80,
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.background,
-              border: Border.all(
-                color: Theme.of(context).colorScheme.primary,
-                width: 2.5,
-              ),
-              borderRadius: BorderRadius.circular(
-                10,
-              ),
             ),
           );
         },

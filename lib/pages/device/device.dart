@@ -29,7 +29,7 @@ class DevicePage extends StatelessWidget {
             ),
           ),
           BottomNavigationBarItem(
-            label: 'Consumo',
+            label: 'Gráficos',
             icon: Icon(
               Icons.bar_chart,
               size: 30,

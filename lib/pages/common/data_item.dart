@@ -15,16 +15,11 @@ class DataItem extends StatelessWidget {
     return SizedBox(
       height: 60,
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Flexible>[
           Expanded(
             flex: 8,
             child: Container(
-              child: Text(
-                itemTitle.toString(),
-                style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                      fontSize: 20,
-                    ),
-              ),
               alignment: Alignment.center,
               decoration: BoxDecoration(
                 border: Border.symmetric(
@@ -34,11 +29,21 @@ class DataItem extends StatelessWidget {
                   ),
                 ),
               ),
+              child: Text(
+                itemTitle.toString(),
+                style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                      fontSize: 20,
+                    ),
+              ),
             ),
           ),
           Expanded(
             flex: 5,
             child: Container(
+              alignment: Alignment.center,
+              decoration: const BoxDecoration(
+                color: Colors.white,
+              ),
               child: Text(
                 itemData.toString(),
                 style: Theme.of(context).textTheme.bodyText1!.copyWith(
@@ -46,14 +51,9 @@ class DataItem extends StatelessWidget {
                       fontSize: 20,
                     ),
               ),
-              alignment: Alignment.center,
-              decoration: const BoxDecoration(
-                color: Colors.white,
-              ),
             ),
           ),
         ],
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
       ),
     );
   }

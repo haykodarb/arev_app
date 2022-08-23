@@ -13,7 +13,12 @@ class StartPage extends StatelessWidget {
     required BuildContext context,
   }) {
     return Container(
+      margin: const EdgeInsets.only(
+        top: 50,
+      ),
+      alignment: Alignment.center,
       child: Padding(
+        padding: const EdgeInsets.fromLTRB(70, 30, 70, 30),
         child: Text(
           'Arev',
           style: GoogleFonts.patuaOne(
@@ -21,12 +26,7 @@ class StartPage extends StatelessWidget {
             color: Colors.white,
           ),
         ),
-        padding: const EdgeInsets.fromLTRB(70, 30, 70, 30),
       ),
-      margin: const EdgeInsets.only(
-        top: 50,
-      ),
-      alignment: Alignment.center,
     );
   }
 
@@ -34,6 +34,20 @@ class StartPage extends StatelessWidget {
     required BuildContext context,
   }) {
     return Container(
+      margin: const EdgeInsets.only(
+        top: 30,
+        bottom: 10,
+      ),
+      decoration: BoxDecoration(
+        border: Border.symmetric(
+          horizontal: BorderSide(
+            color: Theme.of(context).colorScheme.onBackground,
+          ),
+        ),
+      ),
+      alignment: Alignment.center,
+      height: 50,
+      width: 700,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -50,20 +64,6 @@ class StartPage extends StatelessWidget {
           ),
         ],
       ),
-      margin: const EdgeInsets.only(
-        top: 30,
-        bottom: 10,
-      ),
-      decoration: BoxDecoration(
-        border: Border.symmetric(
-          horizontal: BorderSide(
-            color: Theme.of(context).colorScheme.onBackground,
-          ),
-        ),
-      ),
-      alignment: Alignment.center,
-      height: 50,
-      width: 700,
     );
   }
 
@@ -111,15 +111,15 @@ class StartPage extends StatelessWidget {
                     currentDevice: currentDevice,
                   );
                 },
-                child: const Icon(
-                  Icons.settings_outlined,
-                  color: Colors.white,
-                  size: 40,
-                ),
                 style: OutlinedButton.styleFrom(
                   side: BorderSide(
                     color: Theme.of(context).colorScheme.primary,
                   ),
+                ),
+                child: const Icon(
+                  Icons.settings_outlined,
+                  color: Colors.white,
+                  size: 40,
                 ),
               ),
             ),
@@ -186,6 +186,7 @@ class StartPage extends StatelessWidget {
   }) {
     return Flexible(
       child: SizedBox(
+        width: 300,
         child: ListView.builder(
           padding: const EdgeInsets.all(8),
           itemCount: foundDevices.length,
@@ -195,7 +196,6 @@ class StartPage extends StatelessWidget {
             );
           },
         ),
-        width: 300,
       ),
     );
   }
