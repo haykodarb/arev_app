@@ -175,6 +175,39 @@ class ConfigPage extends StatelessWidget {
     );
   }
 
+  Widget _selectedTimeShow() {
+    BuildContext context = Get.context!;
+    int initTime = configController.configBody.value.initialTime;
+    int finalTime = configController.configBody.value.finalTime;
+    String text =
+        'Encendido desde las $initTime:00 hasta las $finalTime:00 del ';
+    text += initTime > finalTime ? 'día siguiente.' : 'mismo día.';
+    text = initTime == finalTime ? 'Encendido todo el día.' : text;
+
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 40,
+        vertical: 20,
+      ),
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            color: Theme.of(context).colorScheme.onBackground,
+            width: 0.5,
+          ),
+        ),
+      ),
+      alignment: Alignment.center,
+      child: Text(
+        text,
+        style: const TextStyle(
+          fontWeight: FontWeight.w300,
+          fontSize: 18,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return GetBuilder(
@@ -204,6 +237,7 @@ class ConfigPage extends StatelessWidget {
                         _systButton(),
                         _configButton(ParameterType.initialTime),
                         _configButton(ParameterType.finalTime),
+                        _selectedTimeShow(),
                         _configButton(ParameterType.initialTemp),
                         _configButton(ParameterType.finalTemp),
                         Expanded(

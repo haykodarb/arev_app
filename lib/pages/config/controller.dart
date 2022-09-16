@@ -94,11 +94,8 @@ class ConfigController extends GetxController {
 
     switch (parameter) {
       case ParameterType.initialTime:
-        minValue = 0;
-        maxValue = configBody.value.finalTime - 1;
-        break;
       case ParameterType.finalTime:
-        minValue = configBody.value.initialTime + 1;
+        minValue = 0;
         maxValue = 23;
         break;
 

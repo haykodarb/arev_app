@@ -25,7 +25,7 @@ class ConfigBody {
     finalTime = jsonObject['finalTime'] as int;
     initialTemp = jsonObject['initTemp'] as int;
     finalTemp = jsonObject['finalTemp'] as int;
-    systState = jsonObject['systState'] as int == 1;
+    systState = jsonObject['systState'] as bool;
   }
 
   String toJson() {
