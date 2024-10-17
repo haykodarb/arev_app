@@ -1,16 +1,7 @@
-# app_get
+# Arev mobile application
 
-A new Flutter project.
+This is a Flutter based app that is used for managing the device that monitors and controls a solar water heater's temperature.
 
-## Getting Started
+It has been built and tested on Android and Linux, it is untested in any Apple devices.
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+You can run it yourself by either using ```flutter run``` or ```flutter build apk```
