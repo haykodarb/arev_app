@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       getPages: routes(),
       initialRoute: RouteNames.startPage,
       theme: darkTheme,
-      localizationsDelegates: const [GlobalMaterialLocalizations.delegate],
+      localizationsDelegates: GlobalMaterialLocalizations.delegates,
       supportedLocales: const [
         Locale('es'),
       ],

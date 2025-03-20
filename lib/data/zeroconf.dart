@@ -10,63 +10,67 @@ class ZeroconfBackend {
         required ZeroconfService newDevice,
       })
           addDevice}) async {
-    const String name = '_arev._tcp.local';
+    try {
+      const String name = '_arev._tcp.local';
 
-    final MDnsClient client = MDnsClient(
-      rawDatagramSocketFactory: (dynamic host, int port,
-          {bool? reuseAddress, bool? reusePort, int? ttl}) {
-        return RawDatagramSocket.bind(
-          host,
-          port,
-          reuseAddress: true,
-          reusePort: false,
-          ttl: ttl!,
-        );
-      },
-    );
+      final MDnsClient client = MDnsClient(
+        rawDatagramSocketFactory: (dynamic host, int port, {bool? reuseAddress, bool? reusePort, int? ttl}) {
+          return RawDatagramSocket.bind(
+            host,
+            port,
+            reuseAddress: true,
+            reusePort: false,
+            ttl: ttl!,
+          );
+        },
+      );
 
-    await client.start();
+      print('Client starts');
+      await client.start();
 
-    await for (final PtrResourceRecord ptr in client.lookup<PtrResourceRecord>(
-      ResourceRecordQuery.serverPointer(
-        name,
-      ),
-    )) {
-      await for (final SrvResourceRecord srv
-          in client.lookup<SrvResourceRecord>(
-        ResourceRecordQuery.service(
-          ptr.domainName,
+      await for (final PtrResourceRecord ptr in client.lookup<PtrResourceRecord>(
+        ResourceRecordQuery.serverPointer(
+          name,
         ),
       )) {
-        await for (final IPAddressResourceRecord ip
-            in client.lookup<IPAddressResourceRecord>(
-          ResourceRecordQuery.addressIPv4(
-            srv.target,
+        print(ptr);
+
+        await for (final SrvResourceRecord srv in client.lookup<SrvResourceRecord>(
+          ResourceRecordQuery.service(
+            ptr.domainName,
           ),
         )) {
-          final String deviceName = srv.name.split('.')[0];
+          await for (final IPAddressResourceRecord ip in client.lookup<IPAddressResourceRecord>(
+            ResourceRecordQuery.addressIPv4(
+              srv.target,
+            ),
+          )) {
+            final String deviceName = srv.name.split('.')[0];
 
-          try {
-            final int power = await DeviceConfigBackend.getDevicePower(
-              ipAddress: ip.address.host,
-            );
+            try {
+              final int power = await DeviceConfigBackend.getDevicePower(
+                ipAddress: ip.address.host,
+              );
 
-            final ZeroconfService newDevice = ZeroconfService(
-              deviceName: deviceName,
-              ipAddress: ip.address.host,
-              deviceID: srv.target,
-              power: power,
-            );
+              final ZeroconfService newDevice = ZeroconfService(
+                deviceName: deviceName,
+                ipAddress: ip.address.host,
+                deviceID: srv.target,
+                power: power,
+              );
 
-            addDevice(
-              newDevice: newDevice,
-            );
-          } catch (e) {
-            rethrow;
+              addDevice(
+                newDevice: newDevice,
+              );
+            } catch (e) {
+              rethrow;
+            }
           }
         }
       }
+      client.stop();
+    } catch (error) {
+      print(error);
     }
-    client.stop();
   }
 }

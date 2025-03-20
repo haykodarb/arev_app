@@ -32,7 +32,7 @@ dependencies:
   multicast_dns: ^0.3.1
   http: any
   web_socket_channel: ^2.0.0
-  month_picker_dialog: ^0.4.0
+  month_picker_dialog: ^0.6.2
   flutter_localizations:
     sdk: flutter
   date_format: ^2.0.2
